@@ -10,6 +10,7 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/wait.h>
 
 void dostuff(int); /* function prototype */
 void error(const char *msg)
@@ -53,8 +54,13 @@ int main(int argc, char *argv[])
                         close(sockfd);
                         dostuff(newsockfd);
                         exit(0);
+                } else {
+                    close(newsockfd);
+                    int status;
+                    int ret;
+                    ret = wait(&status);
+                    printf("child %d exit status code: %d\n",ret,status);
                 }
-                else close(newsockfd);
         } /* end of while */
         close(sockfd);
         return 0; /* we never get here */
