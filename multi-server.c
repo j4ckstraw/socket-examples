@@ -1,4 +1,5 @@
 #include "addr.h"
+#include <sys/wait.h>
 
 
 int main(int argc, char **argv)
@@ -47,6 +48,8 @@ int main(int argc, char **argv)
                 } else { // parent
                         // printf("[parent] parent close connfd\n");
                         close(connfd);
+                        int status;
+                        wait(&status);
                 }
         }// end while 1
         return 0;

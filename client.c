@@ -17,8 +17,9 @@ int main(int argc, char **argv)
     } else {
         char buffer[20] = "hello server\n";
         // memset(buffer,'\0',sizeof(buffer));
-        printf("buffer: %s\nsize:%d\n",buffer,sizeof(buffer));
-        send(sockfd,buffer,sizeof(buffer),0);
+        // printf("buffer: %s\nsize:%d\n",buffer,sizeof(buffer));
+        // send(sockfd,buffer,sizeof(buffer),0);
+        write(sockfd,buffer,sizeof(buffer));
     }
     close(sockfd);
     return 0;
