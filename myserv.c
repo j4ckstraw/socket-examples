@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <sys/wait.h>
 #include <string.h>
 
@@ -20,12 +21,14 @@ int main(int argc, char *argv[])
     address.sin_family = AF_INET;
     address.sin_port = htons(port);
     address.sin_addr.s_addr = INADDR_ANY; 
+    // address.sin_addr.s_addr = inet_addr(ip); 
     
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     bind(sockfd, (struct sockaddr*)&address, sizeof(address));
     listen(sockfd,5);
-    // printf("listen on: %s\n",inet_ntoa(address.sin_addr));
-    // printf("listen on: %s:%d\n",inet_ntoa(address.sin_addr),ntohs(address.sin_port));
+    
+    unsigned char buf[sizeof(struct in_addr)];
+    printf("listen on: %s:%d\n",inet_ntoa(address.sin_addr),ntohs(address.sin_port));
     while(1){
         int connfd;
         int pid;
@@ -42,14 +45,14 @@ int main(int argc, char *argv[])
             close(sockfd);
             printf("[child] close sockfd\n");
             while(recv(connfd,buffer,BUFSIZE-1,0)>0);
-            // printf("%s:%d connected\n",inet_ntoa(client.sin_addr),ntohs(client.sin_port));
+            printf("%s:%d connected\n",inet_ntoa(client.sin_addr),ntohs(client.sin_port));
             printf("data: %s\n",buffer);
             exit(0);
         } else { //parent
             int status;
             int ret;
             close(connfd); 
-            ret = wait(&status);
+            ret = wait(&status);  // you need wait for child to exit.
             printf("child %d exit status: %d\n",ret,status);
         }
     }//end while 1
