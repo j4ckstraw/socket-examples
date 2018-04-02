@@ -36,9 +36,15 @@ int main(int argc, char *argv[])
         int clientlen = sizeof(client);
         memset(&client,'\0',sizeof(client));
         connfd = accept(sockfd, (struct sockaddr*)&client, &clientlen);
-        if(connfd == -1) perror("accept error\n");
+        if(connfd == -1) {
+            perror("accept error\n");
+            exit(2);
+        }
         pid = fork();
-        if(pid < 0) perror("fork error\n");
+        if(pid < 0) {
+            perror("fork error\n");
+            exit(2);
+        }
         if(pid == 0) { // child
             char buffer[BUFSIZE];
             memset(buffer,'\0',sizeof(buffer));
