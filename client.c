@@ -1,16 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <arpa/inet.h>
+#include "addr.h"
 
 int main(int argc, char **argv)
 {
     struct sockaddr_in address;
-    char *ip = "127.0.0.1";
-    int port = 18080;
     int sockfd;
     int ret;
     bzero(&address,sizeof(address));

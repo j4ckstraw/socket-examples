@@ -1,17 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <errno.h>
-#include <assert.h>
+#include "addr.h"
+
 
 int main(int argc, char **argv)
 {
-    char *ip = "127.0.0.1";
-    int port = 18080;
     int ret;
     int sockfd;
     struct sockaddr_in address;
@@ -43,7 +34,7 @@ int main(int argc, char **argv)
         printf("accept error: %d\n",errno);
     } else {
         char buffer[1024];
-        memset(&buffer,0,sizeof(buffer));
+        memset(buffer,0,sizeof(buffer));
         while(recv(connfd,buffer,1024-1,0)>0);
         printf("recv: %s\n",buffer);
         close(connfd);
